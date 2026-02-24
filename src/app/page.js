@@ -339,7 +339,7 @@ export default function Home() {
   };
 
   return (
-    <main className="container mx-auto max-w-5xl px-4 scale-[0.80] md:scale-100 origin-top">
+    <main className="container mx-auto max-w-5xl px-4 py-8">
       <h1 className="title">내 번호는 몇등일까?</h1>
       <p className="desc">
         로또 번호 6개를 입력하면 역대 회차 기준 최고 성적을 알려드립니다.
@@ -527,7 +527,7 @@ export default function Home() {
                   return (
                     <div
                       key={idx}
-                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold
+                      className={`w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-sm md:text-base
                       ${isMatch ? getBallColor(num) : "bg-gray-200 text-gray-400 opacity-40"}`}
                     >
                       {num}

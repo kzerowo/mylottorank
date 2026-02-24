@@ -33,18 +33,17 @@ export default function LottoRow({
             onChange={(e) =>
               handleNumberChange(gameIndex, numberIndex, e.target.value)
             }
-            className="w-10 h-10 md:w-12 md:h-12 text-center border-2 border-gray-400 rounded-xl text-base md:text-lg font-bold text-black bg-white"
+            className="w-10 h-10 md:w-12 md:h-12 text-center border-2 border-gray-400 rounded-xl text-sm md:text-lg font-bold text-black bg-white"
           />
         ))}
       </div>
 
       <button
         onClick={() => generateRandomNumbers(gameIndex)}
-        className="btnBase"
+        className="btnBase text-sm md:text-base px-3 py-1.5 md:px-4 md:py-2"
         style={{
           background: "#7c3aed",
           color: "white",
-          padding: "8px 16px",
         }}
       >
         자동
@@ -52,11 +51,10 @@ export default function LottoRow({
 
       <button
         onClick={() => removeGame(gameIndex)}
-        className="btnBase"
+        className="btnBase text-sm md:text-base px-3 py-1.5 md:px-4 md:py-2"
         style={{
           background: "#ef4444",
           color: "white",
-          padding: "8px 16px",
         }}
       >
         -
