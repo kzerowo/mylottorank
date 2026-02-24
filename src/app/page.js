@@ -339,7 +339,7 @@ export default function Home() {
   };
 
   return (
-    <main className="container mx-auto max-w-5xl px-4 scale-[0.65] md:scale-100 origin-top">
+    <main className="container mx-auto max-w-5xl px-4 scale-[0.80] md:scale-100 origin-top">
       <h1 className="title">내 번호는 몇등일까?</h1>
       <p className="desc">
         로또 번호 6개를 입력하면 역대 회차 기준 최고 성적을 알려드립니다.

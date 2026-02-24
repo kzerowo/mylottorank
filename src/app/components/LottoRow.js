@@ -33,7 +33,7 @@ export default function LottoRow({
             onChange={(e) =>
               handleNumberChange(gameIndex, numberIndex, e.target.value)
             }
-            className="w-12 h-12 text-center border-2 border-gray-400 rounded-xl text-lg font-bold text-black bg-white"
+            className="w-10 h-10 md:w-12 md:h-12 text-center border-2 border-gray-400 rounded-xl text-base md:text-lg font-bold text-black bg-white"
           />
         ))}
       </div>
