@@ -339,7 +339,7 @@ export default function Home() {
   };
 
   return (
-    <main className="container mx-auto max-w-5xl px-4">
+    <main className="container mx-auto max-w-5xl px-4 scale-[0.80] md:scale-100 origin-top">
       <h1 className="title">내 번호는 몇등일까?</h1>
       <p className="desc">
         로또 번호 6개를 입력하면 역대 회차 기준 최고 성적을 알려드립니다.
@@ -356,7 +356,7 @@ export default function Home() {
 
         <button
           className="addBtn btnBase"
-          style={{ background: "#7c3aed" }} // 보라색으로 바꾸고 싶으면
+          style={{ background: "#7c3aed" }}
           onClick={generateAllRandom}
         >
           전체 자동
