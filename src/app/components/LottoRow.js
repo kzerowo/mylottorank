@@ -18,7 +18,7 @@ export default function LottoRow({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex items-center gap-3">
       <span className="w-10 text-right font-semibold text-gray-700">
         {gameIndex + 1}.
       </span>
@@ -38,31 +38,29 @@ export default function LottoRow({
         ))}
       </div>
 
-      <div className="flex gap-2 w-full md:w-auto mt-2 md:mt-0">
-        <button
-          onClick={() => generateRandomNumbers(gameIndex)}
-          className="btnBase"
-          style={{
-            background: "#7c3aed",
-            color: "white",
-            padding: "8px 16px",
-          }}
-        >
-          자동
-        </button>
+      <button
+        onClick={() => generateRandomNumbers(gameIndex)}
+        className="btnBase"
+        style={{
+          background: "#7c3aed",
+          color: "white",
+          padding: "8px 16px",
+        }}
+      >
+        자동
+      </button>
 
-        <button
-          onClick={() => removeGame(gameIndex)}
-          className="btnBase"
-          style={{
-            background: "#ef4444",
-            color: "white",
-            padding: "8px 16px",
-          }}
-        >
-          -
-        </button>
-      </div>
+      <button
+        onClick={() => removeGame(gameIndex)}
+        className="btnBase"
+        style={{
+          background: "#ef4444",
+          color: "white",
+          padding: "8px 16px",
+        }}
+      >
+        -
+      </button>
     </div>
   );
 }
