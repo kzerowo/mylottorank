@@ -417,7 +417,7 @@ export default function Home() {
                   </button>
 
                   {/* 🔵 PC: hover */}
-                  <div className="hidden md:group-hover:block absolute left-0 mt-2 bg-white shadow-xl border rounded-xl p-4 text-sm z-50 max-h-64 overflow-y-auto w-[400px]">
+                  <div className="hidden md:group-hover:block absolute left-0 mt-2 bg-white shadow-xl border rounded-xl p-4 text-sm z-50 max-h-64 overflow-y-auto md:w-[400px] w-[90vw]">
                     {r.extraRounds.map((item, idx) => (
                       <div key={idx} className="mb-3">
                         <div className="flex items-center gap-2 mb-2">
@@ -611,7 +611,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mt-12 bg-white rounded-2xl shadow-lg w-140">
+      <div className="mt-12 bg-white rounded-2xl shadow-lg w-full">
         <div className="p-4 md:p-20 flex justify-center">
           <h2 className="text-2xl font-bold">📊 번호별 출현 횟수 그래프</h2>
         </div>

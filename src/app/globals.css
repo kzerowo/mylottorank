@@ -144,3 +144,6 @@ body {
   font-weight:700;
   cursor:pointer;
 }
+html, body {
+  overflow-x: hidden;
+}
