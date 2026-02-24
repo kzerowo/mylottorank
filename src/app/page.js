@@ -2,8 +2,14 @@
 import { useState, useEffect } from "react";
 import LottoRow from "./components/LottoRow";
 import lottoData from "../data/lotto.json";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 //공 색깔
 const getBallColor = (num) => {
@@ -20,6 +26,7 @@ const formatMoney = (amount) => {
 
 export default function Home() {
   const lottoDB = lottoData;
+  const [openTooltipIndex, setOpenTooltipIndex] = useState(null);
 
   // 랜덤 번호 생성
   const generateRandomNumbers = (gameIndex) => {
@@ -32,7 +39,7 @@ export default function Home() {
     const sorted = Array.from(nums).sort((a, b) => a - b);
 
     const newGames = [...games];
-    newGames[gameIndex] = sorted.map(n => String(n));
+    newGames[gameIndex] = sorted.map((n) => String(n));
     setGames(newGames);
   };
 
@@ -48,16 +55,14 @@ export default function Home() {
       }
 
       const sorted = Array.from(nums).sort((a, b) => a - b);
-      newGames.push(sorted.map(n => String(n)));
+      newGames.push(sorted.map((n) => String(n)));
     }
 
     setGames(newGames);
   };
 
   // 한 줄 = 로또 6개
-  const [games, setGames] = useState([
-    ["", "", "", "", "", ""]
-  ]);
+  const [games, setGames] = useState([["", "", "", "", "", ""]]);
 
   const [results, setResults] = useState([]);
 
@@ -74,7 +79,6 @@ export default function Home() {
     }
   }, []);
 
-
   useEffect(() => {
     localStorage.setItem("lottoGames", JSON.stringify(games));
   }, [games]);
@@ -89,13 +93,12 @@ export default function Home() {
     setGames([...games, ["", "", "", "", "", ""]]);
   };
 
-
   // 줄 삭제
   const removeGame = (index) => {
     const currentRow = games[index];
 
     // 1️⃣ 전부 빈칸인지 확인
-    const isEmpty = currentRow.every(n => n === "");
+    const isEmpty = currentRow.every((n) => n === "");
 
     // 2️⃣ 전부 빈칸이면 → 줄 삭제
     if (isEmpty) {
@@ -112,22 +115,20 @@ export default function Home() {
     }
   };
 
-
   // 결과 계산 함수
   const checkResult = () => {
-
     // ✅ 유효성 검사
     for (let i = 0; i < games.length; i++) {
       const row = games[i];
 
-      if (row.some(n => n === "")) {
+      if (row.some((n) => n === "")) {
         alert("번호를 모두 입력해주세요.");
         return;
       }
 
-      const nums = row.map(n => parseInt(n));
+      const nums = row.map((n) => parseInt(n));
 
-      if (nums.some(n => n < 1 || n > 45)) {
+      if (nums.some((n) => n < 1 || n > 45)) {
         alert("번호는 1~45 사이여야 합니다.");
         return;
       }
@@ -140,11 +141,11 @@ export default function Home() {
     }
 
     // ✅ 자동 오름차순 정렬
-    const sortedGames = games.map(row =>
+    const sortedGames = games.map((row) =>
       [...row]
-        .map(n => parseInt(n))
+        .map((n) => parseInt(n))
         .sort((a, b) => a - b)
-        .map(n => String(n))
+        .map((n) => String(n)),
     );
 
     setGames(sortedGames);
@@ -152,18 +153,16 @@ export default function Home() {
     const newResults = [];
 
     sortedGames.forEach((numbers) => {
-
-      const userNums = numbers.map(n => parseInt(n));
+      const userNums = numbers.map((n) => parseInt(n));
 
       let bestRank = 6;
       let bestRounds = [];
 
       // 🔎 전체 회차 탐색
-      lottoDB.forEach(draw => {
-
+      lottoDB.forEach((draw) => {
         let matchCount = 0;
 
-        draw.numbers.forEach(num => {
+        draw.numbers.forEach((num) => {
           if (userNums.includes(num)) matchCount++;
         });
 
@@ -190,16 +189,12 @@ export default function Home() {
       }
 
       // ✅ 가장 최근 회차 선택
-      const latest = bestRounds.reduce((a, b) =>
-        a.round > b.round ? a : b
-      );
+      const latest = bestRounds.reduce((a, b) => (a.round > b.round ? a : b));
 
       const bestRound = latest.round;
       const bestNumbers = latest.numbers;
       const bestBonus = latest.bonus;
-      const bestMatches = userNums.filter(n =>
-        latest.numbers.includes(n)
-      );
+      const bestMatches = userNums.filter((n) => latest.numbers.includes(n));
 
       let prizeAmount = 0;
 
@@ -211,9 +206,8 @@ export default function Home() {
 
       // ⭐ 추가된 부분
       const extraRounds = bestRounds
-        .filter(d => d.round !== bestRound)
-        .map(d => {
-
+        .filter((d) => d.round !== bestRound)
+        .map((d) => {
           let prize = 0;
 
           if (bestRank === 1) prize = d.firstPrize;
@@ -226,7 +220,7 @@ export default function Home() {
             round: d.round,
             numbers: d.numbers,
             bonus: d.bonus,
-            prizeAmount: prize
+            prizeAmount: prize,
           };
         });
 
@@ -240,9 +234,8 @@ export default function Home() {
         prizeAmount: prizeAmount,
         extraCount: extraRounds.length,
         extraRounds: extraRounds,
-        bonusMatch: userNums.includes(bestBonus)
+        bonusMatch: userNums.includes(bestBonus),
       });
-
     });
 
     setResults(newResults);
@@ -257,8 +250,8 @@ export default function Home() {
     }
 
     // 전체 회차 순회
-    lottoDB.forEach(draw => {
-      draw.numbers.forEach(num => {
+    lottoDB.forEach((draw) => {
+      draw.numbers.forEach((num) => {
         count[num]++;
       });
     });
@@ -267,7 +260,7 @@ export default function Home() {
     const sorted = Object.entries(count)
       .map(([num, freq]) => ({
         number: parseInt(num),
-        frequency: freq
+        frequency: freq,
       }))
       .sort((a, b) => b.frequency - a.frequency);
 
@@ -283,8 +276,8 @@ export default function Home() {
     }
 
     // 전체 회차 순회
-    lottoDB.forEach(draw => {
-      draw.numbers.forEach(num => {
+    lottoDB.forEach((draw) => {
+      draw.numbers.forEach((num) => {
         count[num]++;
       });
     });
@@ -293,7 +286,7 @@ export default function Home() {
     const sorted = Object.entries(count)
       .map(([num, freq]) => ({
         number: parseInt(num),
-        frequency: freq
+        frequency: freq,
       }))
       .sort((a, b) => a.frequency - b.frequency);
 
@@ -301,20 +294,17 @@ export default function Home() {
   };
 
   const getNotAppearedInRecent = (recentCount = 20) => {
-
     if (lottoDB.length === 0) return [];
 
     // 최신 회차 기준 정렬 (round 큰 순)
-    const sortedByLatest = [...lottoDB].sort(
-      (a, b) => b.round - a.round
-    );
+    const sortedByLatest = [...lottoDB].sort((a, b) => b.round - a.round);
 
     const recentDraws = sortedByLatest.slice(0, recentCount);
 
     const appeared = new Set();
 
-    recentDraws.forEach(draw => {
-      draw.numbers.forEach(num => {
+    recentDraws.forEach((draw) => {
+      draw.numbers.forEach((num) => {
         appeared.add(num);
       });
     });
@@ -336,23 +326,20 @@ export default function Home() {
       count[i] = 0;
     }
 
-    lottoDB.forEach(draw => {
-      draw.numbers.forEach(num => {
+    lottoDB.forEach((draw) => {
+      draw.numbers.forEach((num) => {
         count[num]++;
       });
     });
 
     return Object.entries(count).map(([num, freq]) => ({
       number: parseInt(num),
-      frequency: freq
+      frequency: freq,
     }));
   };
 
-
-
   return (
-    <main className="container mx-auto px-4">
-
+    <main className="container mx-auto max-w-5xl px-4">
       <h1 className="title">내 번호는 몇등일까?</h1>
       <p className="desc">
         로또 번호 6개를 입력하면 역대 회차 기준 최고 성적을 알려드립니다.
@@ -376,7 +363,6 @@ export default function Home() {
         </button>
       </div>
 
-
       <div className="gameList">
         {games.map((game, gameIndex) => (
           <LottoRow
@@ -391,22 +377,17 @@ export default function Home() {
         ))}
       </div>
 
-
-      <button
-        className="resultBtn"
-        onClick={checkResult}
-      >
+      <button className="resultBtn btnBase" onClick={checkResult}>
         결과 확인하기
       </button>
-
-
 
       <div className="mt-8 space-y-6">
         {results.map((r, i) => (
           <div key={i} className="bg-white p-4 rounded-xl shadow">
-
             <div className="font-bold text-lg mb-2 flex items-center gap-2 flex-wrap">
-              <span>{i + 1}번 번호 → {r.rank}</span>
+              <span>
+                {i + 1}번 번호 → {r.rank}
+              </span>
 
               {r.round && (
                 <span className="text-blue-500 font-semibold">
@@ -426,41 +407,41 @@ export default function Home() {
                     외 {r.extraCount}회 당첨
                   </span>
 
-                  <button className="ml-1 text-blue-500 font-bold cursor-pointer">
+                  <button
+                    className="ml-1 text-blue-500 font-bold"
+                    onClick={() =>
+                      setOpenTooltipIndex(openTooltipIndex === i ? null : i)
+                    }
+                  >
                     (+)
                   </button>
 
-                  {/* 툴팁 */}
-                  <div className="absolute left-0 mt-2 hidden group-hover:block 
-                    bg-white shadow-xl border rounded-xl p-4 text-sm z-50 
-                    max-h-64 overflow-y-auto min-w-[330px]">
-
+                  {/* 🔵 PC: hover */}
+                  <div className="hidden md:group-hover:block absolute left-0 mt-2 bg-white shadow-xl border rounded-xl p-4 text-sm z-50 max-h-64 overflow-y-auto w-[400px]">
                     {r.extraRounds.map((item, idx) => (
                       <div key={idx} className="mb-3">
-
                         <div className="flex items-center gap-2 mb-2">
                           <span className="font-semibold text-blue-600">
                             {item.round}회차
                           </span>
-
-                          {item.prizeAmount > 0 && (
-                            <span className="text-xs text-emerald-600 font-semibold">
-                              💰 {formatMoney(item.prizeAmount)}
-                            </span>
-                          )}
+                          <span className="text-xs text-emerald-600 font-semibold">
+                            💰 {formatMoney(item.prizeAmount)}
+                          </span>
                         </div>
 
-                        <div className="flex gap-1 flex-wrap items-center">
-                          {item.numbers.map((num, i) => {
-                            const isMatch = r.userNums?.includes(num);
+                        <div className="flex gap-1 items-center flex-nowrap">
+                          {item.numbers.map((num, j) => {
+                            const isMatch = r.userNums.includes(num);
 
                             return (
                               <div
-                                key={i}
+                                key={j}
                                 className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
-                                ${isMatch
+                                ${
+                                  isMatch
                                     ? getBallColor(num)
-                                    : "bg-gray-200 text-gray-400 opacity-50"}`}
+                                    : "bg-gray-200 text-gray-400 opacity-50"
+                                }`}
                               >
                                 {num}
                               </div>
@@ -471,25 +452,75 @@ export default function Home() {
 
                           <div
                             className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
-                            ${r.bonusMatch && r.matches.length === 5
+                            ${
+                              r.userNums.includes(item.bonus)
                                 ? getBallColor(item.bonus)
-                                : "bg-gray-200 text-gray-400 opacity-50"}`}
+                                : "bg-gray-200 text-gray-400 opacity-50"
+                            }`}
                           >
                             {item.bonus}
                           </div>
                         </div>
-
                       </div>
                     ))}
                   </div>
+
+                  {/* 🟢 모바일: 클릭 */}
+                  {openTooltipIndex === i && (
+                    <div className="md:hidden absolute left-0 mt-2 bg-white shadow-xl border rounded-xl p-4 text-sm z-50 max-h-64 overflow-y-auto w-[90vw] max-w-[400px]">
+                      {r.extraRounds.map((item, idx) => (
+                        <div key={idx} className="mb-3">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="font-semibold text-blue-600">
+                              {item.round}회차
+                            </span>
+                            <span className="text-xs text-emerald-600 font-semibold">
+                              💰 {formatMoney(item.prizeAmount)}
+                            </span>
+                          </div>
+
+                          <div className="flex gap-1 items-center flex-nowrap">
+                            {item.numbers.map((num, j) => {
+                              const isMatch = r.userNums.includes(num);
+
+                              return (
+                                <div
+                                  key={j}
+                                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
+                                  ${
+                                    isMatch
+                                      ? getBallColor(num)
+                                      : "bg-gray-200 text-gray-400 opacity-50"
+                                  }`}
+                                >
+                                  {num}
+                                </div>
+                              );
+                            })}
+
+                            <span className="mx-1">+</span>
+
+                            <div
+                              className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
+                              ${
+                                r.userNums.includes(item.bonus)
+                                  ? getBallColor(item.bonus)
+                                  : "bg-gray-200 text-gray-400 opacity-50"
+                              }`}
+                            >
+                              {item.bonus}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
 
-
             {r.numbers && (
               <div className="flex gap-2 items-center">
-
                 {r.numbers.map((num, idx) => {
                   const isMatch = r.matches.includes(num);
 
@@ -504,23 +535,20 @@ export default function Home() {
                   );
                 })}
 
-
                 <span className="mx-2">+</span>
 
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-bold
-                      ${r.bonusMatch
-                      ? getBallColor(r.bonus)
-                      : "bg-gray-200 text-gray-400 opacity-40"}`}
+                      ${
+                        r.bonusMatch
+                          ? getBallColor(r.bonus)
+                          : "bg-gray-200 text-gray-400 opacity-40"
+                      }`}
                 >
                   {r.bonus}
                 </div>
-
-
-
               </div>
             )}
-
           </div>
         ))}
       </div>
@@ -533,7 +561,6 @@ export default function Home() {
         <div className="flex flex-wrap gap-4">
           {getTopNumbers().map((item, idx) => (
             <div key={idx} className="flex flex-col items-center">
-
               <div
                 className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg ${getBallColor(item.number)}`}
               >
@@ -543,7 +570,6 @@ export default function Home() {
               <span className="text-sm text-gray-600 mt-1">
                 {item.frequency}회
               </span>
-
             </div>
           ))}
         </div>
@@ -556,7 +582,6 @@ export default function Home() {
         <div className="flex flex-wrap gap-4">
           {getLeastNumbers().map((item, idx) => (
             <div key={idx} className="flex flex-col items-center">
-
               <div
                 className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg ${getBallColor(item.number)}`}
               >
@@ -566,16 +591,13 @@ export default function Home() {
               <span className="text-sm text-gray-600 mt-1">
                 {item.frequency}회
               </span>
-
             </div>
           ))}
         </div>
       </div>
 
       <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-4">
-          🚫 최근 20회 미출현 번호
-        </h2>
+        <h2 className="text-2xl font-bold mb-4">🚫 최근 20회 미출현 번호</h2>
 
         <div className="grid grid-cols-5 md:grid-cols-10 gap-4">
           {getNotAppearedInRecent(20).map((num, idx) => (
@@ -591,9 +613,7 @@ export default function Home() {
 
       <div className="mt-12 bg-white rounded-2xl shadow-lg w-140">
         <div className="p-4 md:p-20 flex justify-center">
-          <h2 className="text-2xl font-bold">
-            📊 번호별 출현 횟수 그래프
-          </h2>
+          <h2 className="text-2xl font-bold">📊 번호별 출현 횟수 그래프</h2>
         </div>
 
         <div className="h-[300px] md:h-[380px] w-full px-4 md:px-8 pb-8">
@@ -610,11 +630,6 @@ export default function Home() {
           </ResponsiveContainer>
         </div>
       </div>
-
-
-
-
-
     </main>
   );
 }
