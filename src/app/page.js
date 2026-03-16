@@ -339,13 +339,13 @@ export default function Home() {
   };
 
   return (
-    <main className="container mx-auto max-w-5xl px-4 py-8">
-      <h1 className="title">내 번호는 몇등일까?</h1>
-      <p className="desc">
+    <main className="container mx-auto max-w-5xl px-4">
+      <h1 className="title text-center md:text-left">내 번호는 몇등일까?</h1>
+      <p className="desc text-center md:text-left">
         로또 번호 6개를 입력하면 역대 회차 기준 최고 성적을 알려드립니다.
       </p>
 
-      <div className="flex gap-3 mb-6">
+      <div className="flex gap-3 mb-6 justify-center md:justify-start">
         <button
           className="addBtn btnBase disabled:opacity-40"
           onClick={addGame}
