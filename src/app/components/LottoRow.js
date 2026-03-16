@@ -23,7 +23,7 @@ export default function LottoRow({
         {gameIndex + 1}.
       </span>
       {/* 번호 6칸 */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-1 md:gap-2">
         {game.map((num, numberIndex) => (
           <input
             key={numberIndex}
@@ -33,14 +33,14 @@ export default function LottoRow({
             onChange={(e) =>
               handleNumberChange(gameIndex, numberIndex, e.target.value)
             }
-            className="w-10 h-10 md:w-12 md:h-12 text-center border-2 border-gray-400 rounded-xl text-sm md:text-lg font-bold text-black bg-white"
+            className="w-9 h-9 md:w-12 md:h-12 text-center border-2 border-gray-400 rounded-xl text-sm md:text-lg font-bold text-black bg-white"
           />
         ))}
       </div>
 
       <button
         onClick={() => generateRandomNumbers(gameIndex)}
-        className="btnBase text-sm md:text-base px-3 py-1.5 md:px-4 md:py-2"
+        className="btnBase text-sm md:text-base px-2 py-1 md:px-4 md:py-2"
         style={{
           background: "#7c3aed",
           color: "white",
@@ -51,7 +51,7 @@ export default function LottoRow({
 
       <button
         onClick={() => removeGame(gameIndex)}
-        className="btnBase text-sm md:text-base px-3 py-1.5 md:px-4 md:py-2"
+        className="btnBase text-sm md:text-base px-2 py-1 md:px-4 md:py-2"
         style={{
           background: "#ef4444",
           color: "white",
